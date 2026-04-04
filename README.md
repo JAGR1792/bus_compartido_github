@@ -20,8 +20,9 @@ Este proyecto implementa una simulacion de comunicacion por **bus compartido** u
 ```bash
 python bus_compartido.py
 ```
+- Por defecto ejecuta con 5 dispositivos, esto puede ser modificado al usar -n, se habla de ello en la sección de opciones utiles.
 
-## Opciones utiles
+## Opciones utiles (opcionales)
 
 ```bash
 python bus_compartido.py -n 8 --min-uso 0.8 --max-uso 2.5 --max-espera-inicial 1.5

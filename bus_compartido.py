@@ -72,7 +72,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
 
-    # Validaciones basicas para evitar configuraciones invalidas.
+    # Validaciones basicas 
     if args.dispositivos <= 0:
         raise ValueError("La cantidad de dispositivos debe ser mayor a 0.")
     if args.min_uso <= 0 or args.max_uso <= 0:
