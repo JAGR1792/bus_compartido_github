@@ -6,7 +6,7 @@ from __future__ import annotations
 
 
 import argparse # Para crear una interfaz de linea de comandos y recibir parametros de ejecucion.
-import random # Para generar numeros aleatorios y forzar hacer funcionar el sistema
+import secrets # Para generar valores pseudoaleatorios del sistema sin usar el modulo random.
 import time # Para pausar la ejecucion, con algo tipo: (Sleep(random))
 
 #------------------------------------------------------------------------------------------------------
@@ -17,6 +17,14 @@ import time # Para pausar la ejecucion, con algo tipo: (Sleep(random))
 from multiprocessing import Process, Semaphore, current_process
 
 
+def aleatorio_uniforme(minimo: float, maximo: float) -> float:
+    """Genera un valor flotante en [minimo, maximo] usando `secrets` en lugar de `random`."""
+
+    precision = 1_000_000
+    fraccion = secrets.randbelow(precision + 1) / precision
+    return minimo + (maximo - minimo) * fraccion
+
+
 # ========= Parte 2: Logica de un dispositivo =========
 # Esta funcion representa a un dispositivo que intenta usar el bus compartido,
 # espera su turno, transfiere datos y luego libera el canal
@@ -24,7 +32,7 @@ def usar_bus(dispositivo_id: int, bus: Semaphore, min_uso: float, max_uso: float
     """Simula a un dispositivo que necesita enviar datos por un bus compartido."""
 
     # Se introduce un retardo aleatorio para que no todos pidan el bus al mismo tiempo exacto, que haya un número 1, y sea el primer "atendido"
-    espera_inicial = random.uniform(0, max_espera_inicial)
+    espera_inicial = aleatorio_uniforme(0, max_espera_inicial)
     time.sleep(espera_inicial)
 
     nombre = current_process().name
@@ -34,7 +42,7 @@ def usar_bus(dispositivo_id: int, bus: Semaphore, min_uso: float, max_uso: float
     bus.acquire()
     try:
         # Simulacion del tiempo durante el cual el dispositivo usa el bus.
-        tiempo_uso = random.uniform(min_uso, max_uso)
+        tiempo_uso = aleatorio_uniforme(min_uso, max_uso)
         print(
             f"[{nombre}] Dispositivo {dispositivo_id}: usando bus durante {tiempo_uso:.2f}s para transferir datos.",
             flush=True,
